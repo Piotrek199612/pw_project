@@ -8,7 +8,7 @@ namespace Sturmer.AircraftCompany.UI
     {
         public static void Main(string[] args)
         {
-            IBL bl = new BL.BL();
+            IBL bl = new BL.BL(Properties.Settings.Default.LibraryName);
             PrintMenu();
             switch (Console.ReadKey().KeyChar)
             {
