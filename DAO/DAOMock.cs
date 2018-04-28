@@ -23,7 +23,7 @@ namespace Sturmer.Nazwa.DAO
                 new Producer(ProducerName.Tupolev, "Russia",3_524),
             };
 
-                _planes = new List<IPlane>
+            _planes = new List<IPlane>
             {
                 new Plane(_producers.Find(x => x.Name == ProducerName.Airbus), "A380", 15_200),
                 new Plane(_producers.Find(x => x.Name == ProducerName.Airbus), "A350-900", 15_00),
@@ -35,7 +35,7 @@ namespace Sturmer.Nazwa.DAO
                 new Plane(_producers.Find(x => x.Name == ProducerName.Embraer), "195", 3_334),
                 new Plane(_producers.Find(x => x.Name == ProducerName.Iljuszyn), "Ił-114", 2_100),
                 new Plane(_producers.Find(x => x.Name == ProducerName.Lockheed_Martin), "P-3 Orion", 3_835),
-                new Plane(_producers.Find(x => x.Name == ProducerName.Tupolev), "Tu-154", 66_000),
+                new Plane(_producers.Find(x => x.Name == ProducerName.Tupolev), "Tu-154", 6_000),
             };
         }
 

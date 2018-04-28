@@ -17,7 +17,7 @@ namespace Sturmer.Nazwa.DAO
 
         public override string ToString()
         {
-            return string.Format("Name: {0,-20} Country: {1,-20} Range: {2}", Name, Country, Employment);
+            return string.Format("Name: {0,-20} Country: {1,-20} Employment: {2}", Name, Country, Employment);
         }
 
         public ProducerName Name

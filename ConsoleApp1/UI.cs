@@ -7,7 +7,7 @@ namespace ConsoleApp1
 {
     class UI
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             IBL bl = new BL();
             PrintMenu();
@@ -27,7 +27,7 @@ namespace ConsoleApp1
             }
         }
 
-        static private void PrintPlanes(List<IPlane> planes)
+        private static void PrintPlanes(List<IPlane> planes)
         {
             foreach(var plane in planes)
             {
@@ -35,7 +35,7 @@ namespace ConsoleApp1
             }
         }
 
-        static private void PrintProducers(List<IProducer> producers)
+        private static void PrintProducers(List<IProducer> producers)
         {
             foreach(var producer in producers)
             {
@@ -43,7 +43,7 @@ namespace ConsoleApp1
             }
         }
 
-        static private void PrintMenu()
+        private static void PrintMenu()
         {
             Console.Clear();
             Console.WriteLine("1 - Print all planes");
