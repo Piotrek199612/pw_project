@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Sturmer.Nazwa.Interfaces;
-using Sturmer.Nazwa.DAO;
+using Sturmer.AircraftCompany.Interfaces;
+using Sturmer.AircraftCompany.DAO;
 
-namespace Sturmer.Nazwa.BL
+namespace Sturmer.AircraftCompany.BL
 {
     public class BL : IBL
     {

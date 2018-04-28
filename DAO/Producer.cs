@@ -1,14 +1,14 @@
-﻿using Sturmer.Nazwa.Core;
+﻿using Sturmer.AircraftCompany.Core;
 
-namespace Sturmer.Nazwa.DAO
+namespace Sturmer.AircraftCompany.DAO
 {
-    public class Producer : Sturmer.Nazwa.Interfaces.IProducer
+    public class Producer : Sturmer.AircraftCompany.Interfaces.IProducer
     {
-        private ProducerName _name;
+        private string _name;
         private int _employment;
         private string _country;
 
-        public Producer (ProducerName _producerName, string _country, int _employment)
+        public Producer (string _producerName, string _country, int _employment)
         {
             Name = _producerName;
             Country = _country;
@@ -20,7 +20,7 @@ namespace Sturmer.Nazwa.DAO
             return string.Format("Name: {0,-20} Country: {1,-20} Employment: {2}", Name, Country, Employment);
         }
 
-        public ProducerName Name
+        public string Name
         {
             get => _name;
             set => _name = value;

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sturmer.Nazwa.BL;
-using Sturmer.Nazwa.Interfaces;
+using Sturmer.AircraftCompany.Interfaces;
 
-namespace ConsoleApp1
+namespace Sturmer.AircraftCompany.UI
 {
-    class UI
+    public class UI
     {
         public static void Main(string[] args)
         {
-            IBL bl = new BL();
+            IBL bl = new BL.BL();
             PrintMenu();
             switch (Console.ReadKey().KeyChar)
             {

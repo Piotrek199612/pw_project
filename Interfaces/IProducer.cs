@@ -1,8 +1,8 @@
-﻿namespace Sturmer.Nazwa.Interfaces
+﻿namespace Sturmer.AircraftCompany.Interfaces
 {
     public interface IProducer
     {
-        Sturmer.Nazwa.Core.ProducerName Name
+        string Name
         {
             set;
             get;

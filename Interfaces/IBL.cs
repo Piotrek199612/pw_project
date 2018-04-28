@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sturmer.Nazwa.Interfaces
+namespace Sturmer.AircraftCompany.Interfaces
 {
     public interface IBL
     {

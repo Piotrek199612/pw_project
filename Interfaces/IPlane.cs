@@ -1,8 +1,8 @@
-﻿namespace Sturmer.Nazwa.Interfaces
+﻿namespace Sturmer.AircraftCompany.Interfaces
 {
     public interface IPlane
     {
-        Sturmer.Nazwa.Interfaces.IProducer Producer
+        IProducer Producer
         {
             set;
             get;
@@ -14,6 +14,12 @@
         }
 
         int Range
+        {
+            set;
+            get;
+        }
+
+        Core.EngineType EngineType
         {
             set;
             get;
