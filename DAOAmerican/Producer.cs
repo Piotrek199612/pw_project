@@ -1,6 +1,4 @@
-﻿using Sturmer.AircraftCompany.Core;
-
-namespace Sturmer.AircraftCompany.DAO
+﻿namespace Sturmer.AircraftCompany.DAO
 {
     public class Producer : Sturmer.AircraftCompany.Interfaces.IProducer
     {

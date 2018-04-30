@@ -11,10 +11,19 @@ namespace Sturmer.AircraftCompany.BL
 
         public BL(string daoName)
         {
-            var dao = Assembly.UnsafeLoadFrom(daoName + ".dll");
-            Type daoType = GetDBName(dao.GetTypes(), "DAO");
-            ConstructorInfo constructorInfo = daoType.GetConstructor(new Type[] { });
-            _dao = (IDAO)constructorInfo.Invoke(new Type[] { });
+            try
+            {
+                var dao = Assembly.UnsafeLoadFrom(daoName + ".dll");
+                Type daoType = GetDBName(dao.GetTypes(), "DAO");
+                ConstructorInfo constructorInfo = daoType.GetConstructor(new Type[] { });
+                _dao = (IDAO)constructorInfo.Invoke(new Type[] { });
+            }
+            catch(Exception)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error while loading library");
+                Console.ResetColor();
+            }
         }
 
         private static Type GetDBName(Type[] types, string className)
@@ -31,12 +40,20 @@ namespace Sturmer.AircraftCompany.BL
 
         public List<IPlane> GetAllPlanes()
         {
-            return _dao.GetAllPlanes();
+            if (_dao != null)
+            {
+                return _dao.GetAllPlanes();
+            }
+            return new List<IPlane>();
         }
 
         public List<IProducer> GetAllProducers()
         {
-            return _dao.GetAllProducers();
+            if (_dao != null)
+            {
+                return _dao.GetAllProducers();
+            }
+            return new List<IProducer>();
         }
     }
 }

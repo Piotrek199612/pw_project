@@ -44,7 +44,7 @@ namespace Sturmer.AircraftCompany.UI
 
         private static void PrintMenu()
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("1 - Print all planes");
             Console.WriteLine("2 - Print all producers");
             Console.WriteLine("");
