@@ -14,7 +14,7 @@ namespace Sturmer.AircraftCompany.BL
             try
             {
                 var dao = Assembly.UnsafeLoadFrom(daoName + ".dll");
-                Type daoType = GetDBName(dao.GetTypes(), "DAO");
+                Type daoType = GetDaoType(dao.GetTypes(), "IDAO");
                 ConstructorInfo constructorInfo = daoType.GetConstructor(new Type[] { });
                 _dao = (IDAO)constructorInfo.Invoke(new Type[] { });
             }
@@ -26,13 +26,14 @@ namespace Sturmer.AircraftCompany.BL
             }
         }
 
-        private static Type GetDBName(Type[] types, string className)
+        private static Type GetDaoType(Type[] types, string interfaceName)
         {
             foreach (var t in types)
             {
-                if (t.Name.Contains(className))
+                foreach (var i in t.GetInterfaces())
                 {
-                    return t;
+                    if (i.Name == interfaceName)
+                        return t;
                 }
             }
             return null;
