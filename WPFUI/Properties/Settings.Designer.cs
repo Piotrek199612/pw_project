@@ -23,12 +23,15 @@ namespace Sturmer.AircraftCompany.WPFUI.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DAOAmerican")]
         public string LibraryName {
             get {
                 return ((string)(this["LibraryName"]));
+            }
+            set {
+                this["LibraryName"] = value;
             }
         }
     }
