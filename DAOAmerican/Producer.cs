@@ -20,7 +20,7 @@
 
         public bool Equals(Interfaces.IProducer other)
         {
-            if (Name == other.Name && Country == other.Country && Employment == other.Employment)
+            if (Name == other.Name)
             {
                 return true;
             }

@@ -25,7 +25,7 @@ namespace Sturmer.AircraftCompany.DAO
 
         public bool Equals(IPlane other)
         {
-            if (Name == other.Name && Producer.Equals(other.Producer) && Range == other.Range && EngineType == other.EngineType)
+            if (Name == other.Name && Producer.Equals(other.Producer))
             { 
                 return true;
             }

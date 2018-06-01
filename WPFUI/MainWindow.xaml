@@ -22,22 +22,22 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <StackPanel Grid.Row="0" Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding ElementName=PlanesList}">
                         <StackPanel Orientation="Horizontal">
                             <Label>Producer:</Label>
-                            <Label Content="{Binding ElementName=PlanesList, Path=SelectedValue.Producer.Name}"></Label>
+                            <Label Content="{Binding SelectedValue.Producer.Name}"></Label>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label>Name:</Label>
-                            <Label Content="{Binding ElementName=PlanesList, Path=SelectedValue.Name}"></Label>
+                            <Label Content="{Binding SelectedValue.Name}"></Label>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label>Range:</Label>
-                            <Label Content="{Binding ElementName=PlanesList, Path=SelectedValue.Range}"></Label>
+                            <Label Content="{Binding SelectedValue.Range}"></Label>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label>Engine Type:</Label>
-                            <Label Content="{Binding ElementName=PlanesList, Path=SelectedValue.EngineType}"></Label>
+                            <Label Content="{Binding SelectedValue.EngineType}"></Label>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -55,18 +55,18 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <StackPanel Grid.Row="0" Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding ElementName=ProducersList}">
                         <StackPanel Orientation="Horizontal">
                             <Label>Producer:</Label>
-                            <Label Content="{Binding ElementName=ProducersList, Path=SelectedValue.Name}"></Label>
+                            <Label Content="{Binding SelectedValue.Name}"></Label>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label>Country:</Label>
-                            <Label Content="{Binding ElementName=ProducersList, Path=SelectedValue.Country}"></Label>
+                            <Label Content="{Binding SelectedValue.Country}"></Label>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label>Employment:</Label>
-                            <Label Content="{Binding ElementName=ProducersList, Path=SelectedValue.Employment}"></Label>
+                            <Label Content="{Binding SelectedValue.Employment}"></Label>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

@@ -13,13 +13,12 @@ namespace Sturmer.AircraftCompany.Interfaces
         bool AddProducer(string name, string country, int employment);
 
         bool DeletePlane(IPlane plane);
-        bool DeletePlane(IProducer producer, string name, int range, Core.EngineType engineType);
+        bool DeletePlane(IProducer producer, string name);
         bool DeleteProducer(IProducer producer);
-        bool DeleteProducer(string name, string country, int employment);
+        bool DeleteProducer(string name);
 
-        bool UpdatePlane(IPlane plane);
-        bool UpdatePlane(IProducer producer, string name, int range, Core.EngineType engineType);
-        bool UpdateProducer(IProducer producer);
-        bool UpdateProducer(string name, string country, int employment);
+        bool UpdatePlane(IProducer producer, string name, int newRange, Core.EngineType newEngineType);
+        bool UpdateProducer(string name, string newCountry, int newEmployment);
+
     }
 }
