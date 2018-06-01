@@ -6,16 +6,25 @@
         private int _employment;
         private string _country;
 
-        public Producer (string _producerName, string _country, int _employment)
+        public Producer (string producerName, string country, int employment)
         {
-            Name = _producerName;
-            Country = _country;
-            Employment = _employment;
+            Name = producerName;
+            Country = country;
+            Employment = employment;
         }
 
         public override string ToString()
         {
             return string.Format("Name: {0,-20} Country: {1,-20} Employment: {2}", Name, Country, Employment);
+        }
+
+        public bool Equals(Interfaces.IProducer other)
+        {
+            if (Name == other.Name && Country == other.Country && Employment == other.Employment)
+            {
+                return true;
+            }
+            return false;
         }
 
         public string Name

@@ -1,6 +1,8 @@
-﻿namespace Sturmer.AircraftCompany.Interfaces
+﻿using System;
+
+namespace Sturmer.AircraftCompany.Interfaces
 {
-    public interface IProducer
+    public interface IProducer: IEquatable<IProducer>
     {
         string Name
         {

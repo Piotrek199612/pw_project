@@ -1,4 +1,5 @@
 ﻿using Sturmer.AircraftCompany.Core;
+using Sturmer.AircraftCompany.Interfaces;
 
 namespace Sturmer.AircraftCompany.DAO
 {
@@ -9,17 +10,26 @@ namespace Sturmer.AircraftCompany.DAO
         private int _range;
         private EngineType _engineType;
 
-        public Plane (Interfaces.IProducer _producer, string _name, int _range, EngineType _engineType)
+        public Plane (Interfaces.IProducer producer, string name, int range, EngineType engineType)
         {
-            Producer = _producer;
-            Name = _name;
-            Range = _range;
-            EngineType = _engineType;
+            Producer = producer;
+            Name = name;
+            Range = range;
+            EngineType = engineType;
         }
 
         public override string ToString()
         {
             return string.Format("Producer: {0,-20} Name: {1, -20} Range: {2, -20} Engine Type: {3}", Producer.Name, Name, Range, EngineType);
+        }
+
+        public bool Equals(IPlane other)
+        {
+            if (Name == other.Name && Producer.Equals(other.Producer) && Range == other.Range && EngineType == other.EngineType)
+            { 
+                return true;
+            }
+            return false;
         }
 
         public Interfaces.IProducer Producer

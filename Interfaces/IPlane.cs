@@ -1,6 +1,8 @@
-﻿namespace Sturmer.AircraftCompany.Interfaces
+﻿using System;
+
+namespace Sturmer.AircraftCompany.Interfaces
 {
-    public interface IPlane
+    public interface IPlane: IEquatable<IPlane>
     {
         IProducer Producer
         {
@@ -25,4 +27,5 @@
             get;
         }
     }
+
 }

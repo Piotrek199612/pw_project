@@ -31,6 +31,81 @@ namespace Sturmer.AircraftCompany.DAO
             };
         }
 
+        public bool AddPlane(IPlane plane)
+        {
+            if (IfPlaneExists(plane))
+            {
+                return false;
+            }
+            else
+            {
+                _planes.Add(plane);
+                return true;
+            }
+        }
+
+        public bool AddPlane(IProducer producer, string name, int range, EngineType engineType)
+        {
+            var plane = new Plane(producer, name, range, engineType);
+            if (IfPlaneExists(plane))
+            {
+                return false;
+            }
+            else
+            {
+                _planes.Add(plane);
+                return true;
+            }
+        }
+
+        public bool AddProducer(IProducer producer)
+        {
+            if (IfProducerExists(producer))
+            {
+                return false;
+            }
+            else
+            {
+                _producers.Add(producer);
+                return true;
+            }
+        }
+
+        public bool AddProducer(string name, string country, int employment)
+        {
+
+            var producer = new Producer(name, country, employment);
+            if (IfProducerExists(producer))
+            {
+                return false;
+            }
+            else
+            {
+                _producers.Add(producer);
+                return true;
+            }
+        }
+
+        public bool DeletePlane(IPlane plane)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool DeletePlane(IProducer producer, string name, int range, EngineType engineType)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool DeleteProducer(IProducer producer)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool DeleteProducer(string name, string country, int employment)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<IPlane> GetAllPlanes()
         {
             return _planes;
@@ -39,6 +114,36 @@ namespace Sturmer.AircraftCompany.DAO
         public List<IProducer> GetAllProducers()
         {
             return _producers;
+        }
+
+        public bool UpdatePlane(IPlane plane)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool UpdatePlane(IProducer producer, string name, int range, EngineType engineType)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool UpdateProducer(IProducer producer)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool UpdateProducer(string name, string country, int employment)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private bool IfPlaneExists(IPlane plane)
+        {
+            return _planes.Contains(plane);
+        }
+
+        private bool IfProducerExists(IProducer producer)
+        {
+            return _producers.Contains(producer);
         }
     }
 }
