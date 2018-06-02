@@ -191,5 +191,15 @@ namespace Sturmer.AircraftCompany.DAO
             }
             return false;
         }
+
+        public IPlane NewPlane()
+        {
+            return new Plane();
+        }
+
+        public IProducer NewProducer()
+        {
+            return new Producer();
+        }
     }
 }

@@ -7,6 +7,9 @@ namespace Sturmer.AircraftCompany.Interfaces
         List<IPlane> GetAllPlanes();
         List<IProducer>GetAllProducers();
 
+        IPlane NewPlane();
+        IProducer NewProducer();
+
         bool AddPlane(IPlane plane);
         bool AddPlane(IProducer producer, string name, int range, Core.EngineType engineType);
         bool AddProducer(IProducer producer);

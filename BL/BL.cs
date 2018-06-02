@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace Sturmer.AircraftCompany.BL
 {
-    public class BL : IBL
+    public class BL //: IBL
     {
-        private IDAO _dao;
+        private static IDAO _dao;
 
         public BL(string daoName)
         {
@@ -39,7 +39,7 @@ namespace Sturmer.AircraftCompany.BL
             return null;
         }
 
-        public List<IPlane> GetAllPlanes()
+        public static List<IPlane> GetAllPlanes()
         {
             if (_dao != null)
             {
@@ -48,13 +48,36 @@ namespace Sturmer.AircraftCompany.BL
             return new List<IPlane>();
         }
 
-        public List<IProducer> GetAllProducers()
+        public static List<IProducer> GetAllProducers()
         {
             if (_dao != null)
             {
                 return _dao.GetAllProducers();
             }
             return new List<IProducer>();
+        }
+
+        public static bool AddPlane(IPlane plane)
+        {
+            return _dao.AddPlane(plane);
+        }
+
+        public static IPlane NewPlane()
+        {
+            return _dao.NewPlane();
+        }
+
+        public static IProducer NewProducer(String name, String country, int employment)
+        {
+            var producer = _dao.NewProducer();
+            producer.Name = name;
+            producer.Country = country;
+            producer.Employment = employment;
+            return producer;
+        }
+        public static IProducer NewProducer()
+        {
+            return _dao.NewProducer();
         }
     }
 }

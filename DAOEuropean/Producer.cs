@@ -13,6 +13,11 @@
             Employment = employment;
         }
 
+        public Producer()
+        {
+
+        }
+
         public override string ToString()
         {
             return string.Format("Name: {0,-20} Country: {1,-20} Employment: {2}", Name, Country, Employment);

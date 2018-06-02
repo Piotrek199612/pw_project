@@ -10,6 +10,10 @@ namespace Sturmer.AircraftCompany.DAO
         private int _range;
         private EngineType _engineType;
 
+        public Plane()
+        {
+        }
+
         public Plane (Interfaces.IProducer producer, string name, int range, EngineType engineType)
         {
             Producer = producer;

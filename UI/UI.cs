@@ -8,7 +8,7 @@ namespace Sturmer.AircraftCompany.UI
     {
         public static void Main(string[] args)
         {
-            IBL bl = new BL.BL(Properties.Settings.Default.LibraryName);
+         /*   IBL bl = new BL.BL(Properties.Settings.Default.LibraryName);
             PrintMenu();
             switch (Console.ReadKey().KeyChar)
             {
@@ -23,7 +23,7 @@ namespace Sturmer.AircraftCompany.UI
                 default:
                     Console.WriteLine("Choose Correct Option");
                     break;
-            }
+            }*/
         }
 
         private static void PrintPlanes(List<IPlane> planes)

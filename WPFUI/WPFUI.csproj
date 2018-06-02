@@ -102,6 +102,10 @@
       <Project>{5b7bc7a8-df45-414d-9b9b-b2a37a58aefc}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Viewmodels\ViewModels.csproj">
+      <Project>{d508a998-75b7-4f44-b061-3081c758f384}</Project>
+      <Name>ViewModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
