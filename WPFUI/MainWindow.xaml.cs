@@ -15,5 +15,18 @@ namespace Sturmer.AircraftCompany.WPFUI
             BL.BL bl = new BL.BL(Properties.Settings.Default.LibraryName);
             InitializeComponent();
         }
+
+        private void Toogle(object sender, RoutedEventArgs e)
+        {
+            if (EditPlaneButton.Content.ToString() == "Edit")
+            {
+                EditPlaneButton.Content = "Save";
+            }
+            else
+            {
+                EditPlaneButton.Content = "Edit";
+            }
+                
+        }
     }
 }

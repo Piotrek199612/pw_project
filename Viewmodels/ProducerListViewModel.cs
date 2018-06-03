@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using Sturmer.AircraftCompany.Interfaces;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Data;
 
 
@@ -8,16 +10,19 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
     {
         public ObservableCollection<ProducerViewModel> Producers{ get; set; } = new ObservableCollection<ProducerViewModel>();
 
+        public ObservableCollection<IProducer> ProducerSelectList { get; set;} = new ObservableCollection<IProducer>();
+
         private ListCollectionView _view;
 
         public ProducerListViewModel()
         {
-            OnPropertyChanged(nameof(Producers));
             GetAllProducers();
-            EditedProducer = new ProducerViewModel(BL.BL.NewProducer());
 
+            _selectedProducer = new ProducerViewModel(BL.BL.NewProducer());
+            _editedProducer = new ProducerViewModel(BL.BL.NewProducer());
             _view = (ListCollectionView) CollectionViewSource.GetDefaultView(Producers);
             _addNewProducerCommand = new RelayCommand(param => this.AddNewProducer());
+            _deleteProducerCommand = new RelayCommand(param => this.DeleteProducer());
         }
 
         private void GetAllProducers()
@@ -25,6 +30,7 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             foreach (var producer in BL.BL.GetAllProducers())
             {
                 Producers.Add(new ProducerViewModel(producer));
+                ProducerSelectList.Add(producer);
             }
         }
 
@@ -39,11 +45,25 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             }
         }
 
+        private ProducerViewModel _selectedProducer;
+        public ProducerViewModel SelectedProducer
+        {
+            get => _selectedProducer;
+            set
+            {
+                _selectedProducer = value;
+                OnPropertyChanged(nameof(SelectedProducer));
+            }
+        }
+
         private void AddNewProducer()
         {
-            _addNewProducerCommand = new RelayCommand(param => this.AddNewProducer());
-            Producers.Add((ProducerViewModel)EditedProducer.Clone());
-
+            if (BL.BL.AddProducer(EditedProducer.GetProducer()))
+            {
+                Producers.Add(EditedProducer);
+                ProducerSelectList.Add(EditedProducer.GetProducer());
+                EditedProducer = new ProducerViewModel(BL.BL.NewProducer());
+            }
         }
 
         private RelayCommand _addNewProducerCommand;
@@ -51,6 +71,31 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
         public RelayCommand AddNewProducerCommand
         {
             get => _addNewProducerCommand;
+        }
+
+
+        private void DeleteProducer()
+        {
+            if (SelectedProducer.Name != null)
+            {
+                string messageText = $"Do you really want to delete {SelectedProducer.Name}";
+                MessageBoxResult result = MessageBox.Show(messageText, "Confirm", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (BL.BL.DeleteProducer(SelectedProducer.GetProducer()))
+                    {
+                        ProducerSelectList.Remove(SelectedProducer.GetProducer());
+                        Producers.Remove(SelectedProducer);
+                    }
+                }
+                SelectedProducer = new ProducerViewModel(BL.BL.NewProducer());
+            }
+        }
+
+        private RelayCommand _deleteProducerCommand;
+        public RelayCommand DeleteProducerCommand
+        {
+            get => _deleteProducerCommand;
         }
 
     }

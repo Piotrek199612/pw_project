@@ -4,13 +4,18 @@ using System;
 
 namespace Sturmer.AircraftCompany.WPFUI.ViewModels
 {
-    public class ProducerViewModel : ViewModelBase, ICloneable
+    public class ProducerViewModel : ViewModelBase
     {
         private IProducer _producer;
 
         public ProducerViewModel(IProducer producer)
         {
             _producer = producer;
+        }
+
+        public IProducer GetProducer()
+        {
+            return _producer;
         }
 
         public override string ToString()
@@ -57,13 +62,5 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             //TODO Data Validation
         }
 
-        public object Clone()
-        {
-            var tmp = new ProducerViewModel(BL.BL.NewProducer());
-            tmp.Name = Name;
-            tmp.Country = Country;
-            tmp.Employment = Employment;
-            return tmp;
-        }
     }
 }

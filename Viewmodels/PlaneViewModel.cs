@@ -22,6 +22,11 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             }
         }
 
+        public IPlane GetPlane()
+        {
+            return _plane;
+        }
+
         public string Name
         {
             get => _plane.Name;

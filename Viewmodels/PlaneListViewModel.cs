@@ -1,10 +1,9 @@
 ﻿using Sturmer.AircraftCompany.Core;
+using Sturmer.AircraftCompany.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 
@@ -13,16 +12,21 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
     public class PlaneListViewModel : ViewModelBase
     {
         public ObservableCollection<PlaneViewModel> Planes { get; set; } = new ObservableCollection<PlaneViewModel>();
+
         public List<EngineType> EngineTypes { get; } = new List<EngineType>();
+
         private ListCollectionView _view;
 
         public PlaneListViewModel()
         {
-            OnPropertyChanged("Planes");
             GetAllPlanes();
             GetAllEngineTypes();
+
+            _editedPlane = new PlaneViewModel(BL.BL.NewPlane());
+            _selectedPlane = new PlaneViewModel(BL.BL.NewPlane());
             _view = (ListCollectionView) CollectionViewSource.GetDefaultView(Planes);
             _addNewPlaneCommand = new RelayCommand(param => this.AddNewPlane());
+            _deletePlaneCommand = new RelayCommand(param => this.DeletePlane());
         }
 
         private void GetAllPlanes()
@@ -52,9 +56,25 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             }
         }
 
+        private PlaneViewModel _selectedPlane;
+        public PlaneViewModel SelectedPlane
+        {
+            get => _selectedPlane;
+            set
+            {
+                _selectedPlane = value;
+                OnPropertyChanged(nameof(SelectedPlane));
+            }
+        }
+
+
         private void AddNewPlane()
         {
-            EditedPlane = new PlaneViewModel(BL.BL.NewPlane());
+            if (BL.BL.AddPlane(EditedPlane.GetPlane()))
+            {
+                Planes.Add(EditedPlane);
+                EditedPlane = new PlaneViewModel(BL.BL.NewPlane());
+            }
         }
 
         private RelayCommand _addNewPlaneCommand;
@@ -62,6 +82,30 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
         public RelayCommand AddNewPlaneCommand
         {
             get => _addNewPlaneCommand;
+        }
+
+        private RelayCommand _deletePlaneCommand;
+
+        public RelayCommand DeletePlaneCommand
+        {
+            get => _deletePlaneCommand;
+        }
+
+        private void DeletePlane()
+        {
+            if (SelectedPlane.Name != null && SelectedPlane.Producer != null)
+            { 
+                string messageText = $"Do you really want to delete {SelectedPlane.Producer.Name} {SelectedPlane.Name}";
+                MessageBoxResult result = MessageBox.Show(messageText, "Confirm", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (BL.BL.DeletePlane(SelectedPlane.GetPlane()))
+                    {
+                        Planes.Remove(SelectedPlane);
+                    }
+                    SelectedPlane = new PlaneViewModel(BL.BL.NewPlane());
+                }
+            }
         }
 
     }
