@@ -9,39 +9,34 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
 {
     public class RelayCommand : ICommand
     {
-        private Action<object> _execute;
-        private Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
-        public RelayCommand(Action<object> action)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            _execute = action;
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
-        public RelayCommand(Action<object> action, Predicate<object> predicate)
+        public RelayCommand(Action<object> execute) : this(execute, null)
         {
-            _execute = action;
-            _canExecute = predicate;
+
         }
 
-        #region ICommand
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public bool CanExecute(object parameter)
         {
-            if (_canExecute != null)
-            {
-                return _canExecute(parameter);
-            }
-            return true;
+            return _canExecute == null ? true : _canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            if (_execute != null)
-            {
-                _execute(parameter);
-            }
+            _execute(parameter);
         }
-        #endregion
     }
 }

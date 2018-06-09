@@ -77,6 +77,16 @@ namespace Sturmer.AircraftCompany.BL
             return _dao.DeleteProducer(producer);
         }
 
+        public static bool UpdatePlane(IPlane plane)
+        {
+            return _dao.UpdatePlane(plane);
+        }
+
+        public static bool UpdateProducer(IProducer producer)
+        {
+            return _dao.UpdateProducer(producer);
+        }
+
         public static IPlane NewPlane()
         {
             return _dao.NewPlane();

@@ -9,6 +9,38 @@
     <Window.Resources>
         <viewmodels:PlaneListViewModel x:Key="PlaneListViewModel" />
         <viewmodels:ProducerListViewModel x:Key="ProducerListViewModel"/>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <ListBox DockPanel.Dock="Bottom" Name="lstErrors"
+                                     ItemsSource="{Binding ElementName=ErrTextBox,Path=AdornedElement.(Validation.Errors)}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Grid DockPanel.Dock="Left">
+                                <Ellipse Width="20" Height="20" Stroke="DarkRed" Fill="DarkRed"/>
+                                <Label Content="{Binding ElementName=ErrTextBox, Path=AdornedElement.(Validation.Errors).Count}" 
+                                       Foreground="White"/>
+                            </Grid>
+                            <Border BorderBrush="Red">
+                                <AdornedElementPlaceholder Name="ErrTextBox" />
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Control.MinWidth" Value="100"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Control.Margin" Value="20 2 2 70"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <TabControl>
         <TabItem Header="Planes" DataContext="{StaticResource PlaneListViewModel}">
@@ -17,7 +49,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <ListBox Name="PlanesList" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Planes}" SelectedItem="{Binding SelectedPlane}">
+                <ListBox Name="PlanesList" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Planes}" SelectedItem ="{Binding SelectedPlane}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -27,150 +59,161 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <StackPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding ElementName=PlanesList}">
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Producer:</Label>
-                        <Label Content="{Binding SelectedValue.Producer.Name}"></Label>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Name:</Label>
-                        <Label Content="{Binding SelectedValue.Name}"></Label>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Range:</Label>
-                        <TextBox Text="{Binding SelectedValue.Range}"  VerticalContentAlignment="Center" MinWidth="100" IsReadOnly="True"></TextBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Engine Type:</Label>
-                        <Label Content="{Binding SelectedValue.EngineType}"></Label>
-                    </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding Source={StaticResource PlaneListViewModel}, Path=EditedPlane}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0">Producer:</Label>
+                        <Label Content="{Binding Producer.Name}"  Grid.Row="0" Grid.Column="1" ></Label>
+
+                        <Label Grid.Row="1" Grid.Column="0">Name:</Label>
+                        <Label Content="{Binding Name}" Grid.Row="1" Grid.Column="1"></Label>
+
+                        <Label Grid.Row="2" Grid.Column="0">Range:</Label>
+                        <TextBox Text="{Binding Range}"  VerticalContentAlignment="Center" MinWidth="100" Grid.Row="2" Grid.Column="1"></TextBox>
+
+                        <Label Grid.Row="3" Grid.Column="0">Engine Type:</Label>
+                        <ComboBox Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" ItemsSource="{Binding Source={StaticResource PlaneListViewModel}, Path=EngineTypes}" SelectedItem="{Binding EngineType}"></ComboBox>
+                    </Grid>
+
                     <Grid Margin="0, 30, 0, 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="1" Margin="10" Name="EditPlaneButton" Click="Toogle" Content="Edit">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <Trigger Property="Content" Value="Save">
-                                            <Setter Property="Background" Value="YellowGreen"></Setter>
-                                        </Trigger>
-                                        <Trigger Property="Content" Value="Edit">
-                                            <Setter Property="Command" Value="{Binding Source={StaticResource PlaneListViewModel}, Path=DeletePlaneCommand}"></Setter>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
+                        <Button Grid.Column="1" Margin="10" Name="EditPlaneButton" Content="Edit" Command="{Binding Source={StaticResource PlaneListViewModel}, Path=EditPlaneCommand}"></Button>
                         <Button Grid.Column="0" Margin="10" Content="Delete" Command="{Binding Source={StaticResource PlaneListViewModel}, Path=DeletePlaneCommand}"/>
                     </Grid>
                 </StackPanel>
             </Grid>
         </TabItem>
         <TabItem Header="Producers"  DataContext="{StaticResource ProducerListViewModel}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <ListBox Name="ProducersList" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Producers}" SelectedItem="{Binding SelectedProducer}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Label Content="{Binding Name}"></Label>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <StackPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding ElementName=ProducersList}">
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Producer:</Label>
-                        <Label Content="{Binding SelectedValue.Name}"></Label>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Country:</Label>
-                        <Label Content="{Binding SelectedValue.Country}"></Label>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Employment:</Label>
-                        <Label Content="{Binding SelectedValue.Employment}"></Label>
-                    </StackPanel>
-                    <Grid Margin="0, 30, 0, 0">
+            <Border>
+                <AdornerDecorator>
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+                        <ListBox Name="ProducersList" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Producers}" SelectedItem="{Binding SelectedProducer}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding Name}"></Label>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Grid.Row="0" Grid.Column="1" DataContext="{Binding Source={StaticResource ProducerListViewModel}, Path=EditedProducer}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                        <Button Grid.Column="1" Margin="10" Content="Edit"/>
-                        <Button Grid.Column="0" Margin="10" Content="Delete" Command="{Binding Source={StaticResource ProducerListViewModel}, Path=DeleteProducerCommand}"/>
+                                <Label Grid.Row="0" Grid.Column="0">Producer:</Label>
+                                <Label Grid.Row="0" Grid.Column="1" Content="{Binding Name}"></Label>
+
+                                <Label Grid.Row="1" Grid.Column="0">Country:</Label>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Country}" VerticalContentAlignment="Center" MinWidth="100" ></TextBox>
+
+                                <Label Grid.Row="2" Grid.Column="0">Employment:</Label>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Employment}" VerticalContentAlignment="Center" MinWidth="100" ></TextBox>
+                            </Grid>
+                            <Grid Margin="0, 30, 0, 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="1" Margin="10" Content="Edit" Command="{Binding Source={StaticResource ProducerListViewModel}, Path=EditProducerCommand}"/>
+                                <Button Grid.Column="0" Margin="10" Content="Delete" Command="{Binding Source={StaticResource ProducerListViewModel}, Path=DeleteProducerCommand}"/>
+                            </Grid>
+                        </StackPanel>
                     </Grid>
-                </StackPanel>
-            </Grid>
+                </AdornerDecorator>
+            </Border>
         </TabItem>
         <TabItem Header="Add Plane" DataContext="{StaticResource PlaneListViewModel}">
-            <StackPanel>
-                <Grid  MaxHeight="200" VerticalAlignment="Top" Margin="10" DataContext="{Binding EditedPlane}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="6*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
+            <Border>
+                <AdornerDecorator>
+                    <StackPanel>
+                        <Grid  MaxHeight="250" VerticalAlignment="Top" Margin="10" DataContext="{Binding AddedPlane}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="6*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition  MinHeight="20"/>
+                                <RowDefinition MinHeight="60"/>
+                                <RowDefinition MinHeight="60"/>
+                                <RowDefinition MinHeight="20"/>
+                            </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" Margin="6">Producer:</Label>
-                    <ComboBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" ItemsSource="{Binding Source={StaticResource ProducerListViewModel}, Path=ProducerSelectList}" SelectedItem="{Binding Producer}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
+                            <Label Grid.Row="0" Grid.Column="0" Margin="6">Producer:</Label>
+                            <ComboBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" ItemsSource="{Binding Source={StaticResource ProducerListViewModel}, Path=ProducerSelectList}" SelectedItem="{Binding Producer}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                            <Label Grid.Row="1" Grid.Column="0" Margin="6 0 6 20">Name:</Label>
+                            <TextBox Name="PlaneNameAddText" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" Margin="6 0 6 28" Text="{Binding Name , ValidatesOnNotifyDataErrors=True}"></TextBox>
 
-                    <Label Grid.Row="1" Grid.Column="0" Margin="6">Name:</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" Text="{Binding Name}"></TextBox>
+                            <Label Grid.Row="2" Grid.Column="0" Margin="6 0 6 20">Range:</Label>
+                            <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="6 0 6 28" Text="{Binding Range}"></TextBox>
 
-                    <Label Grid.Row="2" Grid.Column="0" Margin="6">Range:</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" Text="{Binding Range}"></TextBox>
-
-                    <Label Grid.Row="3" Grid.Column="0" Margin="6">Engine Type:</Label>
-                    <ComboBox Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" ItemsSource="{Binding Source={StaticResource PlaneListViewModel}, Path=EngineTypes}" SelectedItem="{Binding EngineType}"></ComboBox>
-                </Grid>
-                <Button HorizontalAlignment="Center" Command="{Binding AddNewPlaneCommand}">Add Plane</Button>
-            </StackPanel>
+                            <Label Grid.Row="3" Grid.Column="0" Margin="6">Engine Type:</Label>
+                            <ComboBox Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" ItemsSource="{Binding Source={StaticResource PlaneListViewModel}, Path=EngineTypes}" SelectedItem="{Binding EngineType}"></ComboBox>
+                        </Grid>
+                        <Button Name="AddButton" HorizontalAlignment="Center" Command="{Binding AddNewPlaneCommand}">Add Plane</Button>
+                    </StackPanel>
+                </AdornerDecorator>
+            </Border>
         </TabItem>
         <TabItem Header="Add Producer" DataContext="{StaticResource ProducerListViewModel}">
-            <StackPanel>
-                <Grid  MaxHeight="200" VerticalAlignment="Top" Margin="10" DataContext="{Binding EditedProducer}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="6*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Margin="6">Name:</Label>
-                    <TextBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" Text="{Binding Name}"></TextBox>
+            <Border>
+                <AdornerDecorator>
+                    <StackPanel>
+                        <Grid  MaxHeight="250" VerticalAlignment="Top" Margin="10" DataContext="{Binding AddedProducer}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="6*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition MinHeight="70" />
+                                <RowDefinition MinHeight="70" />
+                                <RowDefinition MinHeight="70" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Margin="6">Name:</Label>
+                            <TextBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" Margin="6 0 0 40" Text="{Binding Name}"></TextBox>
 
-                    <Label Grid.Row="1" Grid.Column="0" Margin="6">Country:</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" Text="{Binding Country}"></TextBox>
+                            <Label Grid.Row="1" Grid.Column="0" Margin="6">Country:</Label>
+                            <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" Margin="6 0 0 40" Text="{Binding Country}"></TextBox>
 
-                    <Label Grid.Row="2" Grid.Column="0" Margin="6">Employment:</Label>
-                    <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="6" Text="{Binding Employment}"></TextBox>
+                            <Label Grid.Row="2" Grid.Column="0" Margin="6">Employment:</Label>
+                            <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="6 0 0 40" Text="{Binding Employment}"></TextBox>
 
-                </Grid>
-                <Button HorizontalAlignment="Center" Command="{Binding AddNewProducerCommand}">
-                    Add Producer
-                </Button>
-            </StackPanel>
+                        </Grid>
+                        <Button HorizontalAlignment="Center" Command="{Binding AddNewProducerCommand}">Add Producer</Button>
+                    </StackPanel>
+                </AdornerDecorator>
+            </Border>
         </TabItem>
     </TabControl>
 </Window>

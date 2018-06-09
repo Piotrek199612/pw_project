@@ -20,7 +20,9 @@ namespace Sturmer.AircraftCompany.Interfaces
         bool DeleteProducer(IProducer producer);
         bool DeleteProducer(string name);
 
+        bool UpdatePlane(IPlane plane);
         bool UpdatePlane(IProducer producer, string name, int newRange, Core.EngineType newEngineType);
+        bool UpdateProducer(IProducer producer);
         bool UpdateProducer(string name, string newCountry, int newEmployment);
 
     }

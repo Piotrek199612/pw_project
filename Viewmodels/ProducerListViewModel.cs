@@ -20,9 +20,12 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
 
             _selectedProducer = new ProducerViewModel(BL.BL.NewProducer());
             _editedProducer = new ProducerViewModel(BL.BL.NewProducer());
+            _addedProducer = new ProducerViewModel(BL.BL.NewProducer());
+            _addedProducer.Validate();
             _view = (ListCollectionView) CollectionViewSource.GetDefaultView(Producers);
-            _addNewProducerCommand = new RelayCommand(param => this.AddNewProducer());
+            _addNewProducerCommand = new RelayCommand(param => this.AddNewProducer(), param => this.CanAddNewProducer());
             _deleteProducerCommand = new RelayCommand(param => this.DeleteProducer());
+            _editProducerCommand = new RelayCommand(param => this.EditProducer(), param => this.CanEditProducer());
         }
 
         private void GetAllProducers()
@@ -34,7 +37,24 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             }
         }
 
+        private ProducerViewModel _addedProducer;
+        public ProducerViewModel AddedProducer
+        {
+            get => _addedProducer;
+            set
+            {
+                _addedProducer = value;
+                OnPropertyChanged(nameof(AddedProducer));
+            }
+        }
+
         private ProducerViewModel _editedProducer;
+
+        private bool CanEditProducer()
+        {
+            return !EditedProducer.HasErrors;
+        }
+
         public ProducerViewModel EditedProducer
         {
             get => _editedProducer;
@@ -51,6 +71,9 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             get => _selectedProducer;
             set
             {
+                _editedProducer.Name= value.Name;
+                _editedProducer.Country = value.Country;
+                _editedProducer.Employment = value.Employment;
                 _selectedProducer = value;
                 OnPropertyChanged(nameof(SelectedProducer));
             }
@@ -58,12 +81,22 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
 
         private void AddNewProducer()
         {
-            if (BL.BL.AddProducer(EditedProducer.GetProducer()))
+            if (BL.BL.AddProducer(AddedProducer.GetProducer()))
             {
-                Producers.Add(EditedProducer);
-                ProducerSelectList.Add(EditedProducer.GetProducer());
-                EditedProducer = new ProducerViewModel(BL.BL.NewProducer());
+                Producers.Add(AddedProducer);
+                AddedProducer = new ProducerViewModel(BL.BL.NewProducer());
+                MessageBox.Show("Producer Added", "Producer Added");
+                AddedProducer.Validate();
             }
+            else
+            {
+                MessageBox.Show("Producer Already Exisits", "Producer Exisits");
+            }
+        }
+
+        private bool CanAddNewProducer()
+        {
+            return !AddedProducer.HasErrors;
         }
 
         private RelayCommand _addNewProducerCommand;
@@ -73,6 +106,25 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
             get => _addNewProducerCommand;
         }
 
+        private RelayCommand _editProducerCommand;
+
+        public RelayCommand EditProducerCommand
+        {
+            get => _editProducerCommand;
+        }
+
+        private void EditProducer()
+        {
+            if (EditedProducer.Name != null)
+            {
+                string messageText = $"Do you really want to edit {EditedProducer.Name}";
+                MessageBoxResult result = MessageBox.Show(messageText, "Confirm", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    BL.BL.UpdateProducer(EditedProducer.GetProducer());
+                }
+            }
+        }
 
         private void DeleteProducer()
         {
@@ -86,9 +138,9 @@ namespace Sturmer.AircraftCompany.WPFUI.ViewModels
                     {
                         ProducerSelectList.Remove(SelectedProducer.GetProducer());
                         Producers.Remove(SelectedProducer);
+                        SelectedProducer = new ProducerViewModel(BL.BL.NewProducer());
                     }
                 }
-                SelectedProducer = new ProducerViewModel(BL.BL.NewProducer());
             }
         }
 

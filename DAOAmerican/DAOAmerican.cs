@@ -181,12 +181,32 @@ namespace Sturmer.AircraftCompany.DAO
             return false;
         }
 
+        public bool UpdatePlane(IPlane plane)
+        {
+            if (IfPlaneExists(plane))
+            {
+                _planes.Where(x => x.Equals(plane)).ToList().ForEach(x => { x.Range = plane.Range; x.EngineType = plane.EngineType; });
+                return true;
+            }
+            return false;
+        }
+
         public bool UpdateProducer(string name, string newCountry, int newEmployment)
         {
             var producer = new Producer(name, "", 0);
             if (IfProducerExists(producer))
             {
                 _producers.Where(x => x.Equals(producer)).ToList().ForEach(x => { x.Country = newCountry; x.Employment = newEmployment; });
+                return true;
+            }
+            return false;
+        }
+
+        public bool UpdateProducer(IProducer producer)
+        {
+            if (IfProducerExists(producer))
+            {
+                _producers.Where(x => x.Equals(producer)).ToList().ForEach(x => { x.Country = producer.Country; x.Employment = producer.Employment; });
                 return true;
             }
             return false;
